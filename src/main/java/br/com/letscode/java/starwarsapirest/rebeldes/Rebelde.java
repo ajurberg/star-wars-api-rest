@@ -17,6 +17,4 @@ public class Rebelde {
     private GeneroEnum genero;
     private Localizacao localizacao;
 
-
-
 }
