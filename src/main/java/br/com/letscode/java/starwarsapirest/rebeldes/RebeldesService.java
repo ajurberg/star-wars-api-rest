@@ -16,16 +16,15 @@ public class RebeldesService {
 
     public String adRebeldeService(Rebelde rebelde) {
         String retorno = "";
-
         if (rebelde.getGenero() == null
                 || rebelde.getIdade() == null || rebelde.getNome() == null) {
-            retorno = "Por favor, preencha todos os campos";
+            retorno = "Por favor, preencha todos os campos"; // TODO Include exception
         } else {
-
-            retorno = ">>>>>Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso!<<<<< \n" +
-                    "Idade:" + rebelde.getIdade() + "\nGenero:" + rebelde.getGenero() +
-                    "\n" + rebelde.getLocalizacao() +
-                    "\n" + rebelde.getInventario();
+            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
+                    "Idade: " + rebelde.getIdade() +
+                    "\nGenero: " + rebelde.getGenero() +
+                    "\nLocalização: " + rebelde.getLocalizacao() +
+                    "\nInventário: " + rebelde.getInventario();
         }
         rebeldesRepository.inserirNoArquivo(rebelde);
         return retorno;

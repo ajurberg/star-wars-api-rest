@@ -50,9 +50,7 @@ public class RebeldesRepository {
                 rebelde.getInventario().getMunicao(),
                 rebelde.getInventario().getAgua(),
                 rebelde.getInventario().getComida());
-
     }
-
 
     public List<Rebelde> getAll() throws IOException {
         List<Rebelde> rebeldes;
@@ -85,7 +83,6 @@ public class RebeldesRepository {
         inventario.setAgua(Integer.valueOf(token.nextToken()));
         inventario.setComida(Integer.valueOf(token.nextToken()));
         rebelde.setInventario(inventario);
-
         return rebelde;
     }
 }

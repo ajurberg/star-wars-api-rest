@@ -20,10 +20,8 @@ public class RebeldesRestControler {
     }
 
     @PostMapping
-    private String adRebelde (@RequestBody Rebelde rebelde){
-
+    private String addRebelde(@RequestBody Rebelde rebelde){
         return rebeldesService.adRebeldeService(rebelde);
-
     }
 
 }

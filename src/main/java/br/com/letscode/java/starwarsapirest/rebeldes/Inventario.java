@@ -1,7 +1,9 @@
 package br.com.letscode.java.starwarsapirest.rebeldes;
 
-
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -14,6 +16,5 @@ public class Inventario {
     private Integer municao;
     private Integer agua;
     private Integer comida;
-
 
 }
