@@ -33,7 +33,6 @@ public class RebeldesService {
         return retorno;
     }
 
-    // FIXME?
     public String updateRebelLocationService(Rebelde rebelde, Localizacao localizacao) throws IOException {
         String atualizacao = "";
         if (listAll().contains(rebelde)) {
@@ -43,8 +42,14 @@ public class RebeldesService {
                     "\nGenero: " + rebelde.getGenero() +
                     "\nLocalização: " + rebelde.getLocalizacao() +
                     "\nInventário: " + rebelde.getInventario();
-            rebeldesRepository.inserirNoArquivo(rebelde);
+            rebeldesRepository.inserirNoArquivo(rebelde); // FIXME não é necessário rastrear as localizações, apenas sobrescrever a última é o suficiente
         }
         return atualizacao;
+    }
+
+    public void reportTreason(Rebelde rebelde) throws IOException {
+        if (listAll().contains(rebelde)) {
+            rebelde.setDowngrade(rebelde.getDowngrade() + 1);
+        }
     }
 }
