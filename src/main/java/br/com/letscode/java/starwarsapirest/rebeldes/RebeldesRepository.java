@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
@@ -35,7 +36,36 @@ public class RebeldesRepository {
         }
     }
 
-    //TODO fazer atualizarNoArquivo
+    public void removerNoArquivo(Integer idRebelde) throws IOException {
+        List<Rebelde> rebeldes = getAll();
+        List<Rebelde> rebeldesResultante = new ArrayList<>();
+        for (Rebelde rebelde : rebeldes) {
+            if (!rebelde.getIdRebelde().equals(idRebelde)) {
+                rebeldesResultante.add(rebelde);
+            }
+        }
+        reescreverNoArquivo(rebeldesResultante);
+    }
+
+    public void atualizarNoArquivo(Rebelde rebeldeAtualizado) throws IOException {
+        removerNoArquivo(rebeldeAtualizado.getIdRebelde());
+        inserirNoArquivo(rebeldeAtualizado);
+    }
+
+    private void reescreverNoArquivo(List<Rebelde> rebeldes) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        for (Rebelde rebeldeBuilder: rebeldes) {
+            builder.append(formatar(rebeldeBuilder));
+        }
+        write(builder.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    // Escreve o arquivo ou adiciona um conteudo junto ao mesmo
+    private void write(String rebeldeString, StandardOpenOption option) throws IOException {
+        try (BufferedWriter bf = Files.newBufferedWriter(rebeldePath, StandardOpenOption.APPEND)) {
+            bf.write(rebeldeString);
+        }
+    }
 
     private String formatar(Rebelde rebelde) {
         return String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;\n",
@@ -87,6 +117,7 @@ public class RebeldesRepository {
         rebelde.setInventario(inventario);
         return rebelde;
     }
+
 }
 
 

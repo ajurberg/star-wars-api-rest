@@ -26,7 +26,7 @@ public class RebeldesRestController {
 
     @PutMapping
     private String atualizarRebelde(@RequestBody RebeldeDTO rebeldeDTO) throws IOException {
-        return rebeldesService.updateRebeldeService(rebeldeDTO);
+        return rebeldesService.updateLocationRebeldeService(rebeldeDTO);
     }
 
 }

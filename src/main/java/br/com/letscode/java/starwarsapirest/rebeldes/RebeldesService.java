@@ -25,26 +25,25 @@ public class RebeldesService {
                 || rebelde.getIdade() == null || rebelde.getNome() == null) {
             retorno = "Por favor, preencha todos os campos"; // TODO Include exception
         } else {
-
-            //            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
-//                    "Idade: " + rebelde.getIdade() +
-//                    "\nGenero: " + rebelde.getGenero() +
-//                    "\nLocalização: " + rebelde.getLocalizacao() +
-//                    "\nInventário: " + rebelde.getInventario();
+            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
+                    "Idade: " + rebelde.getIdade() +
+                    "\nGenero: " + rebelde.getGenero() +
+                    "\nLocalização: " + rebelde.getLocalizacao() +
+                    "\nInventário: " + rebelde.getInventario();
             rebeldesRepository.inserirNoArquivo(rebelde);
         }
         return retorno;
     }
 
 
-    public String updateRebeldeService(RebeldeDTO rebeldeDTO) throws IOException {
+    public String updateLocationRebeldeService(RebeldeDTO rebeldeDTO) throws IOException {
         var rebeldeAtualizado = findByIdRebelde(rebeldeDTO.getIdRebelde());
         String atualizacao = "";
         if (rebeldeAtualizado != null) {
             rebeldeAtualizado.setLocalizacao(rebeldeDTO.getLocalizacao());
             atualizacao = ">>>>> Rebelde ID: " + rebeldeDTO.getIdRebelde() + " Nome: " + rebeldeAtualizado.getNome() + ", atualizado com sucesso! <<<<< \n" +
                     "\n Nova localização: " + rebeldeAtualizado.getLocalizacao();
-            //rebeldesRepository.atualizarNoArquivo(rebeldeAtualizado);
+            rebeldesRepository.atualizarNoArquivo(rebeldeAtualizado);
         } else {
             atualizacao = ">>>>> Rebelde não encontrado. <<<<< \n";
         }
@@ -62,18 +61,11 @@ public class RebeldesService {
         }
     }
 
-
-//
-//    public Optional<Cliente> findByCpf(String cpf) throws IOException {
-//        List<Cliente> clientes = getAll();
-//        return clientes.stream().filter(cliente -> cliente.getCpf().equals(cpf)).findFirst();
+//    public void reportTreason(Rebelde rebelde) throws IOException {
+//        if (listAll().contains(rebelde)) {
+//            rebelde.setDowngrade(rebelde.getDowngrade() + 1);
+//        }
 //    }
-
-    public void reportTreason(Rebelde rebelde) throws IOException {
-        if (listAll().contains(rebelde)) {
-            rebelde.setDowngrade(rebelde.getDowngrade() + 1);
-        }
-    }
 
     public void adicionarItemNoInventario(Rebelde rebelde, Inventario item) throws IOException {
         if (listAll().contains(rebelde)) {
