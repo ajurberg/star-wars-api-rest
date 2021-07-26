@@ -62,7 +62,7 @@ public class RebeldesRepository {
 
     // Escreve o arquivo ou adiciona um conteudo junto ao mesmo
     private void write(String rebeldeString, StandardOpenOption option) throws IOException {
-        try (BufferedWriter bf = Files.newBufferedWriter(rebeldePath, StandardOpenOption.APPEND)) {
+        try (BufferedWriter bf = Files.newBufferedWriter(rebeldePath, option)) {
             bf.write(rebeldeString);
         }
     }

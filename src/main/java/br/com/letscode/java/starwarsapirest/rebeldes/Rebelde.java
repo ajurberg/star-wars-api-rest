@@ -1,6 +1,5 @@
 package br.com.letscode.java.starwarsapirest.rebeldes;
 
-
 import lombok.*;
 
 @Getter
