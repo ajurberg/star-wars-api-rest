@@ -1,11 +1,10 @@
 package br.com.letscode.java.starwarsapirest.rebeldes;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
 
 
 @RequestMapping("/rebeldes")
@@ -15,6 +14,10 @@ public class RebeldesRestControler {
 
     private final RebeldesService rebeldesService;
 
+    @GetMapping
+    public List createQuiz() throws IOException {
+        return rebeldesService.listAll();
+    }
 
     @PostMapping
     private String adRebelde (@RequestBody Rebelde rebelde){
