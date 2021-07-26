@@ -10,18 +10,23 @@ import java.util.List;
 @RequestMapping("/rebeldes")
 @RestController
 @AllArgsConstructor
-public class RebeldesRestControler {
+public class RebeldesRestController {
 
     private final RebeldesService rebeldesService;
 
     @GetMapping
-    public List createQuiz() throws IOException {
+    public List listarRebeldes() throws IOException {
         return rebeldesService.listAll();
     }
 
     @PostMapping
-    private String addRebelde(@RequestBody Rebelde rebelde){
+    private String adicionarRebelde(@RequestBody Rebelde rebelde){
         return rebeldesService.addRebeldeService(rebelde);
+    }
+
+    @PutMapping
+    private String atualizarRebelde(@RequestBody RebeldeDTO rebeldeDTO) throws IOException {
+        return rebeldesService.updateRebeldeService(rebeldeDTO);
     }
 
 }
