@@ -13,8 +13,11 @@ public class RebeldesService {
 
     private final RebeldesRepository rebeldesRepository;
 
+    public List listAll() throws IOException {
+        return rebeldesRepository.getAll();
+    }
 
-    public String adRebeldeService(Rebelde rebelde) {
+    public String addRebeldeService(Rebelde rebelde) {
         String retorno = "";
         if (rebelde.getGenero() == null
                 || rebelde.getIdade() == null || rebelde.getNome() == null) {
@@ -25,12 +28,23 @@ public class RebeldesService {
                     "\nGenero: " + rebelde.getGenero() +
                     "\nLocalização: " + rebelde.getLocalizacao() +
                     "\nInventário: " + rebelde.getInventario();
+            rebeldesRepository.inserirNoArquivo(rebelde);
         }
-        rebeldesRepository.inserirNoArquivo(rebelde);
         return retorno;
     }
 
-    public List listAll() throws IOException {
-       return rebeldesRepository.getAll();
+    // FIXME?
+    public String updateRebelLocationService(Rebelde rebelde, Localizacao localizacao) throws IOException {
+        String atualizacao = "";
+        if (listAll().contains(rebelde)) {
+            rebelde.setLocalizacao(localizacao);
+            atualizacao = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
+                    "Idade: " + rebelde.getIdade() +
+                    "\nGenero: " + rebelde.getGenero() +
+                    "\nLocalização: " + rebelde.getLocalizacao() +
+                    "\nInventário: " + rebelde.getInventario();
+            rebeldesRepository.inserirNoArquivo(rebelde);
+        }
+        return atualizacao;
     }
 }
