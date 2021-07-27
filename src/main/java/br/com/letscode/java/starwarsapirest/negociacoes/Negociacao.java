@@ -1,4 +1,4 @@
-package br.com.letscode.java.starwarsapirest.negociar;
+package br.com.letscode.java.starwarsapirest.negociacoes;
 
 import br.com.letscode.java.starwarsapirest.rebeldes.Inventario;
 import lombok.Getter;
@@ -14,4 +14,5 @@ public class Negociacao {
     private Inventario inventarioRebelde1;
     private Integer idRebelde2;
     private Inventario inventarioRebelde2;
+
 }

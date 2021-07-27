@@ -8,15 +8,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@RequestMapping("/relatorio")
 @RestController
 @AllArgsConstructor
 public class RelatorioRestController {
 
     private final RelatoriosService relatoriosService;
 
-    @GetMapping("/relatorio1")
-    public String relatorioTraidoresRebeldes() throws IOException {
-        return relatoriosService.relatorio1();
+    @GetMapping
+    public String exibirRelatorios() throws IOException {
+        return relatoriosService.relatorioRebeldes() + "\n" +
+                relatoriosService.relatorioRecursosRebeldes() + "\n" +
+                relatoriosService.relatorioRecursosTraidores();
     }
 
 }

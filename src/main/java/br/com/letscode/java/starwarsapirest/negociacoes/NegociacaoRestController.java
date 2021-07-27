@@ -1,4 +1,4 @@
-package br.com.letscode.java.starwarsapirest.negociar;
+package br.com.letscode.java.starwarsapirest.negociacoes;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,20 +6,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/negociar")
+@RequestMapping("/negociacao")
 @RestController
 @AllArgsConstructor
-public class NegociarRestControler {
+public class NegociacaoRestController {
 
-    private final NegociarService negociarService;
+    private final NegociacaoService negociacaoService;
 
     @PostMapping
     private String negociar(@RequestBody Negociacao negociacao){
-
-        return negociarService.negociar(negociacao);
-
-
+        return negociacaoService.negociar(negociacao);
     }
-
 
 }
