@@ -116,6 +116,8 @@ public class RebeldesRepository {
         inventario.setComida(Integer.valueOf(token.nextToken()));
         rebelde.setInventario(inventario);
         return rebelde;
+
+
     }
 
 }
