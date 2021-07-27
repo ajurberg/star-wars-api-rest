@@ -16,7 +16,7 @@ public class RebeldesRestController {
 
     @GetMapping
     public List listarRebeldes() throws IOException {
-        return rebeldesService.listAll();
+        return rebeldesService.listRebeldes();
     }
 
     @PostMapping

@@ -34,23 +34,23 @@ public class RelatoriosService {
     }
 
     public String relatorioRecursosRebeldes() throws IOException {
-        int armaCounter = 0;
-        int municaoCounter = 0;
-        int aguaCounter = 0;
-        int comidaCounter = 0;
-        int rebeldeCounter = 0;
+        Double armaCounter = 0d;
+        Double municaoCounter = 0d;
+        Double aguaCounter = 0d;
+        Double comidaCounter = 0d;
+        Double rebeldeCounter = 0d;
         List<Rebelde> rebeldes = rebeldesRepository.getAll();
         for (Rebelde rebelde : rebeldes) {
             // Rebeldes
             if (rebelde.getDowngrade() < 3) {
                 armaCounter += rebelde.getInventario().getArma();
-                municaoCounter = rebelde.getInventario().getMunicao();
-                aguaCounter = rebelde.getInventario().getAgua();
-                comidaCounter = rebelde.getInventario().getComida();
+                municaoCounter += rebelde.getInventario().getMunicao();
+                aguaCounter += rebelde.getInventario().getAgua();
+                comidaCounter += rebelde.getInventario().getComida();
                 rebeldeCounter++;
             }
         }
-        int pontosRebeldes = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
+        Double pontosRebeldes = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
         return ">>>>> RELATÓRIO DE REBELDES <<<<< \n" +
                 "O número total de traidores é: " + rebeldeCounter + "\n" +
                 "O total de armas dos Rebeldes é: " + armaCounter + "\n" +
@@ -58,6 +58,7 @@ public class RelatoriosService {
                 "O total de água dos Rebeldes é: " + aguaCounter + "\n" +
                 "O total de comida dos Rebeldes é: " + comidaCounter + "\n" +
                 "\n" +
+
                 ">>>>> MÉDIA DE RECURSOS POR REBELDE <<<<< \n" +
                 "A média de armas por rebelde é: " + armaCounter / rebeldeCounter + "\n" +
                 "A média de munição por rebelde é: " + municaoCounter / rebeldeCounter + "\n" +
@@ -70,11 +71,11 @@ public class RelatoriosService {
     }
 
     public String relatorioRecursosTraidores() throws IOException {
-        int armaCounter = 0;
-        int municaoCounter = 0;
-        int aguaCounter = 0;
-        int comidaCounter = 0;
-        int traidorCounter = 0;
+        Double armaCounter = 0d;
+        Double municaoCounter = 0d;
+        Double aguaCounter = 0d;
+        Double comidaCounter = 0d;
+        Double traidorCounter = 0d;
         List<Rebelde> rebeldes = rebeldesRepository.getAll();
         for (Rebelde rebelde : rebeldes) {
             // apenas Traidores
@@ -86,7 +87,7 @@ public class RelatoriosService {
                 traidorCounter++;
             }
         }
-        int pontosTraidor = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
+        Double pontosTraidor = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
         return ">>>>> RELATÓRIO DE TRAIDORES <<<<< \n" +
                 "O número total de traidores é: " + traidorCounter + "\n" +
                 "O total de armas dos Traidores é: " + armaCounter + "\n" +

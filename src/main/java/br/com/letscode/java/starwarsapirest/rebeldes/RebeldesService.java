@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +14,15 @@ public class RebeldesService {
 
     private final RebeldesRepository rebeldesRepository;
 
-    public List listAll() throws IOException {
-        return rebeldesRepository.getAll();
+    public List listRebeldes() throws IOException {
+        List<Rebelde> todos = rebeldesRepository.getAll();
+        List<Rebelde> rebeldes = new ArrayList<>();
+        for (Rebelde rebelde : todos) {
+            if (rebelde.getDowngrade() < 3) {
+                rebeldes.add(rebelde);
+            }
+        }
+        return rebeldes;
     }
 
     public String addRebeldeService(Rebelde rebelde) {
@@ -48,7 +56,7 @@ public class RebeldesService {
     }
 
     public Rebelde findByIdRebelde(Integer idRebelde) throws IOException {
-        List<Rebelde> rebeldes = listAll();
+        List<Rebelde> rebeldes = listRebeldes();
         Optional<Rebelde> optionalRebelde = rebeldes.stream()
                 .filter(buscaRebelde -> buscaRebelde.getIdRebelde().equals(idRebelde)).findFirst();
         if (optionalRebelde.isPresent()) {
