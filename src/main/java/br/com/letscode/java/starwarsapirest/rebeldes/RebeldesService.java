@@ -66,4 +66,17 @@ public class RebeldesService {
         }
     }
 
+    public String reportarTraidor(Integer traidorID) throws IOException {
+        List<Rebelde> lista = rebeldesRepository.getAll();
+        for (Rebelde rebelde : lista) {
+            if (traidorID.equals(rebelde.getIdRebelde())) {
+                rebelde.setDowngrade(rebelde.getDowngrade() + 1);
+                this.rebeldesRepository.atualizarNoArquivo(rebelde);
+                return "Traidor reportado com sucesso";
+            }
+
+        }
+        return "Rebelde não encontrado";
+    }
+
 }
