@@ -72,7 +72,7 @@ public class RebeldesService {
             if (traidorID.equals(rebelde.getIdRebelde())) {
                 rebelde.setDowngrade(rebelde.getDowngrade() + 1);
                 this.rebeldesRepository.atualizarNoArquivo(rebelde);
-                return "Traidor reportado com sucesso";
+                return "Traidor "+ rebelde.getNome() + " foi reportado com sucesso";
             }
 
         }

@@ -73,10 +73,10 @@ public class RebeldesRestControllerTest {
 
     @Test
     public void reportarTraidor() throws Exception {
-        Rebelde traidor = new Rebelde();
-        traidor.setIdRebelde(-1);
-        mockMvc.perform(post("/rebeldes/traidor"))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(post("/rebeldes/traidor").content(String.valueOf(1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     public static String asJsonString(final Object obj) {
