@@ -2,23 +2,16 @@ package br.com.letscode.java.starwarsapirest.rebeldes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
-import java.io.IOException;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,12 +22,14 @@ public class RebeldesRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private RebeldesRepository rebeldesRepository;
 
     private Rebelde rebelde() {
         Rebelde rebelde = new Rebelde();
         rebelde.setIdRebelde(1);
         rebelde.setNome("Arthur");
-        //rebelde.setIdade(19);
+        rebelde.setIdade(19);
         rebelde.setGenero(GeneroEnum.MASCULINO);
         rebelde.setDowngrade(0);
         Localizacao localizacao = new Localizacao();
@@ -53,14 +48,6 @@ public class RebeldesRestControllerTest {
     }
 
     @Test
-    void listarRebeldes() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/rebeldes"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("desi")));
-    }
-
-    @Test
     public void createRebelde() throws Exception {
         Rebelde rebelde = rebelde();
         mockMvc.perform(post("/rebeldes")
@@ -68,15 +55,22 @@ public class RebeldesRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("todos")));
+                .andExpect(content().string(containsString("Arthur")));
     }
 
     @Test
-    public void reportarTraidor() throws Exception {
-        mockMvc.perform(post("/rebeldes/traidor").content(String.valueOf(1))
+    public void naoAtualizarRebelde() throws Exception {
+        var rebelde = rebelde();
+        var rebeldeDto = new RebeldeDTO();
+        rebeldeDto.setIdRebelde(1);
+        rebeldeDto.setLocalizacao(rebelde.getLocalizacao());
+
+        mockMvc.perform(put("/rebeldes")
+        .content(asJsonString(rebeldeDto))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(">>>>> Rebelde nÃ£o encontrado. <<<<<")));
     }
 
     public static String asJsonString(final Object obj) {
@@ -86,6 +80,4 @@ public class RebeldesRestControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }

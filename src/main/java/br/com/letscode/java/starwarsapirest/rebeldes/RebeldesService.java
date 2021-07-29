@@ -26,12 +26,14 @@ public class RebeldesService {
     }
 
     public String addRebeldeService(Rebelde rebelde) {
+        //TODO validar Id existente
         String retorno = "";
         if (rebelde.getGenero() == null
                 || rebelde.getIdade() == null || rebelde.getNome() == null) {
             retorno = "Por favor, preencha todos os campos"; // TODO Include exception
         } else {
-            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " + rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
+            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " +
+                    rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
                     "Idade: " + rebelde.getIdade() +
                     "\nGenero: " + rebelde.getGenero() +
                     "\nLocalização: " + rebelde.getLocalizacao() +
@@ -46,7 +48,8 @@ public class RebeldesService {
         String atualizacao = "";
         if (rebeldeAtualizado != null) {
             rebeldeAtualizado.setLocalizacao(rebeldeDTO.getLocalizacao());
-            atualizacao = ">>>>> Rebelde ID: " + rebeldeDTO.getIdRebelde() + " Nome: " + rebeldeAtualizado.getNome() + ", atualizado com sucesso! <<<<< \n" +
+            atualizacao = ">>>>> Rebelde ID: " + rebeldeDTO.getIdRebelde() + " Nome: "
+                    + rebeldeAtualizado.getNome() + ", atualizado com sucesso! <<<<< \n" +
                     "\n Nova localização: " + rebeldeAtualizado.getLocalizacao();
             rebeldesRepository.atualizarNoArquivo(rebeldeAtualizado);
         } else {
@@ -59,11 +62,7 @@ public class RebeldesService {
         List<Rebelde> rebeldes = listRebeldes();
         Optional<Rebelde> optionalRebelde = rebeldes.stream()
                 .filter(buscaRebelde -> buscaRebelde.getIdRebelde().equals(idRebelde)).findFirst();
-        if (optionalRebelde.isPresent()) {
-            return optionalRebelde.get();
-        } else {
-            return null;
-        }
+        return optionalRebelde.orElse(null);
     }
 
     public String reportarTraidor(Integer traidorID) throws IOException {
@@ -72,7 +71,7 @@ public class RebeldesService {
             if (traidorID.equals(rebelde.getIdRebelde())) {
                 rebelde.setDowngrade(rebelde.getDowngrade() + 1);
                 this.rebeldesRepository.atualizarNoArquivo(rebelde);
-                return "Traidor "+ rebelde.getNome() + " foi reportado com sucesso";
+                return "Traidor " + rebelde.getNome() + " foi reportado com sucesso";
             }
 
         }
