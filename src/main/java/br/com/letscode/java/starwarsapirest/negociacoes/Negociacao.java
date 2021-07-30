@@ -14,5 +14,4 @@ public class Negociacao {
     private Inventario inventarioRebelde1;
     private Integer idRebelde2;
     private Inventario inventarioRebelde2;
-
 }

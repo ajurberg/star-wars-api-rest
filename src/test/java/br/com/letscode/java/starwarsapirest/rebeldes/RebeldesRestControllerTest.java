@@ -64,7 +64,6 @@ public class RebeldesRestControllerTest {
         var rebeldeDto = new RebeldeDTO();
         rebeldeDto.setIdRebelde(1);
         rebeldeDto.setLocalizacao(rebelde.getLocalizacao());
-
         mockMvc.perform(put("/rebeldes")
         .content(asJsonString(rebeldeDto))
                 .contentType(MediaType.APPLICATION_JSON)

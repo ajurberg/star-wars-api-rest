@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-
 @RequestMapping("/rebeldes")
 @RestController
 @AllArgsConstructor
@@ -20,7 +19,7 @@ public class RebeldesRestController {
     }
 
     @PostMapping
-    private String adicionarRebelde(@RequestBody Rebelde rebelde){
+    private String adicionarRebelde(@RequestBody Rebelde rebelde) throws IOException {
         return rebeldesService.addRebeldeService(rebelde);
     }
 
@@ -33,5 +32,4 @@ public class RebeldesRestController {
     private String reportarTraidor(@RequestBody Integer traidorId) throws IOException {
         return rebeldesService.reportarTraidor(traidorId);
     }
-
 }

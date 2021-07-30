@@ -25,22 +25,22 @@ public class RebeldesService {
         return rebeldes;
     }
 
-    public String addRebeldeService(Rebelde rebelde) {
-        //TODO validar Id existente
-        String retorno = "";
-        if (rebelde.getGenero() == null
-                || rebelde.getIdade() == null || rebelde.getNome() == null) {
-            retorno = "Por favor, preencha todos os campos"; // TODO Include exception
-        } else {
-            retorno = ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " +
-                    rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
-                    "Idade: " + rebelde.getIdade() +
-                    "\nGenero: " + rebelde.getGenero() +
-                    "\nLocalização: " + rebelde.getLocalizacao() +
-                    "\nInventário: " + rebelde.getInventario();
-            rebeldesRepository.inserirNoArquivo(rebelde);
+    public String addRebeldeService(Rebelde rebelde) throws IOException {
+        if (findAllById(rebelde.getIdRebelde()) == null) {
+            if (rebelde.getGenero() == null
+                    || rebelde.getIdade() == null || rebelde.getNome() == null) {
+                return "Por favor, preencha todos os campos";
+            } else {
+                rebeldesRepository.inserirNoArquivo(rebelde);
+                return ">>>>> Rebelde ID: " + rebelde.getIdRebelde() + " Nome: " +
+                        rebelde.getNome() + ", cadastrado com sucesso! <<<<< \n" +
+                        "Idade: " + rebelde.getIdade() +
+                        "\nGenero: " + rebelde.getGenero() +
+                        "\nLocalização: " + rebelde.getLocalizacao() +
+                        "\nInventário: " + rebelde.getInventario();
+            }
         }
-        return retorno;
+        return "Usúario já existente";
     }
 
     public String updateLocationRebeldeService(RebeldeDTO rebeldeDTO) throws IOException {
@@ -59,6 +59,7 @@ public class RebeldesService {
     }
 
     public Rebelde findByIdRebelde(Integer idRebelde) throws IOException {
+        //Não aderir a sugestão do Intellij, pois quebra o código.
         List<Rebelde> rebeldes = listRebeldes();
         Optional<Rebelde> optionalRebelde = rebeldes.stream()
                 .filter(buscaRebelde -> buscaRebelde.getIdRebelde().equals(idRebelde)).findFirst();
@@ -67,15 +68,20 @@ public class RebeldesService {
 
     public String reportarTraidor(Integer traidorID) throws IOException {
         List<Rebelde> lista = rebeldesRepository.getAll();
-        for (Rebelde rebelde : lista) {
-            if (traidorID.equals(rebelde.getIdRebelde())) {
-                rebelde.setDowngrade(rebelde.getDowngrade() + 1);
-                this.rebeldesRepository.atualizarNoArquivo(rebelde);
-                return "Traidor " + rebelde.getNome() + " foi reportado com sucesso";
+        for (Rebelde traidor : lista) {
+            if (traidorID.equals(traidor.getIdRebelde())) {
+                traidor.setDowngrade(traidor.getDowngrade() + 1);
+                this.rebeldesRepository.atualizarNoArquivo(traidor);
+                return "Traidor " + traidor.getNome() + " foi reportado com sucesso";
             }
-
         }
         return "Rebelde não encontrado";
     }
 
+    public Rebelde findAllById(Integer idRebelde) throws IOException {
+        List<Rebelde> rebeldes = rebeldesRepository.getAll();
+        Optional<Rebelde> optionalRebelde = rebeldes.stream()
+                .filter(buscaRebelde -> buscaRebelde.getIdRebelde().equals(idRebelde)).findFirst();
+        return optionalRebelde.orElse(null);
+    }
 }

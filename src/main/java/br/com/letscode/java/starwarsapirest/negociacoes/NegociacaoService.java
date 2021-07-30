@@ -17,26 +17,26 @@ public class NegociacaoService {
     @SneakyThrows
     public String negociar(Negociacao negociacao) {
         String mensagemDeRetorno = "";
-        Rebelde rebelde1 = rebeldesService.findByIdRebelde(negociacao.getIdRebelde1());
-        Rebelde rebelde2 = rebeldesService.findByIdRebelde(negociacao.getIdRebelde2());
-        if (rebelde1 == null || rebelde2 == null
-                || rebelde1.getDowngrade() >= 3 || rebelde2.getDowngrade() >= 3 ) {
+        Rebelde negociadorA = rebeldesService.findByIdRebelde(negociacao.getIdRebelde1());
+        Rebelde negociadorB = rebeldesService.findByIdRebelde(negociacao.getIdRebelde2());
+        if (negociadorA == null || negociadorB == null
+                || negociadorA.getDowngrade() >= 3 || negociadorB.getDowngrade() >= 3 ) {
             mensagemDeRetorno = "ID não encontrado na base rebelde. Verifique se preencheu corretamente o ID ou verifique a lista de traidores";
-        } else if (verificarEstoqueNegociacao(negociacao, rebelde1, rebelde2) || verificarPontosNegociacao(negociacao)) {
-            mensagemDeRetorno = realizarTroca(negociacao, rebelde1, rebelde2);
+        } else if (verificarEstoqueNegociacao(negociacao, negociadorA, negociadorB) || verificarPontosNegociacao(negociacao)) {
+            mensagemDeRetorno = realizarTroca(negociacao, negociadorA, negociadorB);
         }
         return mensagemDeRetorno;
     }
 
-    public Boolean verificarEstoqueNegociacao(Negociacao negociacao, Rebelde rebelde1, Rebelde rebelde2) {
-        return negociacao.getInventarioRebelde1().getAgua() <= rebelde1.getInventario().getAgua() &&
-                negociacao.getInventarioRebelde1().getArma() <= rebelde1.getInventario().getArma() &&
-                negociacao.getInventarioRebelde1().getComida() <= rebelde1.getInventario().getComida() &&
-                negociacao.getInventarioRebelde1().getMunicao() <= rebelde1.getInventario().getMunicao() &&
-                negociacao.getInventarioRebelde2().getAgua() <= rebelde2.getInventario().getAgua() &&
-                negociacao.getInventarioRebelde2().getArma() <= rebelde2.getInventario().getArma() &&
-                negociacao.getInventarioRebelde2().getComida() <= rebelde2.getInventario().getComida() &&
-                negociacao.getInventarioRebelde2().getMunicao() <= rebelde2.getInventario().getMunicao();
+    public Boolean verificarEstoqueNegociacao(Negociacao negociacao, Rebelde negociadorA, Rebelde negociadorB) {
+        return negociacao.getInventarioRebelde1().getAgua() <= negociadorA.getInventario().getAgua() &&
+                negociacao.getInventarioRebelde1().getArma() <= negociadorA.getInventario().getArma() &&
+                negociacao.getInventarioRebelde1().getComida() <= negociadorA.getInventario().getComida() &&
+                negociacao.getInventarioRebelde1().getMunicao() <= negociadorA.getInventario().getMunicao() &&
+                negociacao.getInventarioRebelde2().getAgua() <= negociadorB.getInventario().getAgua() &&
+                negociacao.getInventarioRebelde2().getArma() <= negociadorB.getInventario().getArma() &&
+                negociacao.getInventarioRebelde2().getComida() <= negociadorB.getInventario().getComida() &&
+                negociacao.getInventarioRebelde2().getMunicao() <= negociadorB.getInventario().getMunicao();
     }
 
     public Boolean verificarPontosNegociacao(Negociacao negociacao) {
@@ -45,53 +45,50 @@ public class NegociacaoService {
         Integer pontosAguaRebelde1 = negociacao.getInventarioRebelde1().getAgua() * 2;
         Integer pontosComidaRebelde1 = negociacao.getInventarioRebelde1().getComida();
         int pontosTotaisRebelde1 = pontosArmaRebelde1 + pontosMunicaoRebelde1 + pontosAguaRebelde1 + pontosComidaRebelde1;
-
         Integer pontosArmaRebelde2 = negociacao.getInventarioRebelde2().getArma() * 4;
         Integer pontosMunicaoRebelde2 = negociacao.getInventarioRebelde2().getMunicao() * 3;
         Integer pontosAguaRebelde2 = negociacao.getInventarioRebelde2().getAgua() * 2;
         Integer pontosComidaRebelde2 = negociacao.getInventarioRebelde2().getComida();
         int pontosTotaisRebelde2 = pontosArmaRebelde2 + pontosMunicaoRebelde2 + pontosAguaRebelde2 + pontosComidaRebelde2;
-
         return pontosTotaisRebelde1 == pontosTotaisRebelde2;
     }
 
     @SneakyThrows
-    public String realizarTroca(Negociacao negociacao, Rebelde rebelde1, Rebelde rebelde2) {
+    public String realizarTroca(Negociacao negociacao, Rebelde negociadorA, Rebelde negociadorB) {
         if (negociacao.getInventarioRebelde1().getAgua() > 0) {
-            rebelde2.getInventario().setAgua(rebelde2.getInventario().getAgua() + negociacao.getInventarioRebelde1().getAgua());
-            rebelde1.getInventario().setAgua(rebelde1.getInventario().getAgua() - negociacao.getInventarioRebelde1().getAgua());
+            negociadorB.getInventario().setAgua(negociadorB.getInventario().getAgua() + negociacao.getInventarioRebelde1().getAgua());
+            negociadorA.getInventario().setAgua(negociadorA.getInventario().getAgua() - negociacao.getInventarioRebelde1().getAgua());
         }
         if (negociacao.getInventarioRebelde1().getComida() > 0) {
-            rebelde2.getInventario().setComida(rebelde2.getInventario().getComida() + negociacao.getInventarioRebelde1().getComida());
-            rebelde1.getInventario().setComida(rebelde1.getInventario().getComida() - negociacao.getInventarioRebelde1().getComida());
+            negociadorB.getInventario().setComida(negociadorB.getInventario().getComida() + negociacao.getInventarioRebelde1().getComida());
+            negociadorA.getInventario().setComida(negociadorA.getInventario().getComida() - negociacao.getInventarioRebelde1().getComida());
         }
         if (negociacao.getInventarioRebelde1().getArma() > 0) {
-            rebelde2.getInventario().setArma(rebelde2.getInventario().getArma() + negociacao.getInventarioRebelde1().getArma());
-            rebelde1.getInventario().setArma(rebelde1.getInventario().getArma() - negociacao.getInventarioRebelde1().getArma());
+            negociadorB.getInventario().setArma(negociadorB.getInventario().getArma() + negociacao.getInventarioRebelde1().getArma());
+            negociadorA.getInventario().setArma(negociadorA.getInventario().getArma() - negociacao.getInventarioRebelde1().getArma());
         }
         if (negociacao.getInventarioRebelde1().getMunicao() > 0) {
-            rebelde2.getInventario().setMunicao(rebelde2.getInventario().getMunicao() + negociacao.getInventarioRebelde1().getMunicao());
-            rebelde1.getInventario().setMunicao(rebelde1.getInventario().getMunicao() - negociacao.getInventarioRebelde1().getMunicao());
+            negociadorB.getInventario().setMunicao(negociadorB.getInventario().getMunicao() + negociacao.getInventarioRebelde1().getMunicao());
+            negociadorA.getInventario().setMunicao(negociadorA.getInventario().getMunicao() - negociacao.getInventarioRebelde1().getMunicao());
         }
         if (negociacao.getInventarioRebelde2().getAgua() > 0) {
-            rebelde1.getInventario().setAgua(rebelde1.getInventario().getAgua() + negociacao.getInventarioRebelde2().getAgua());
-            rebelde2.getInventario().setAgua(rebelde2.getInventario().getAgua() - negociacao.getInventarioRebelde2().getAgua());
+            negociadorA.getInventario().setAgua(negociadorA.getInventario().getAgua() + negociacao.getInventarioRebelde2().getAgua());
+            negociadorB.getInventario().setAgua(negociadorB.getInventario().getAgua() - negociacao.getInventarioRebelde2().getAgua());
         }
         if (negociacao.getInventarioRebelde2().getComida() > 0) {
-            rebelde1.getInventario().setComida(rebelde1.getInventario().getComida() + negociacao.getInventarioRebelde2().getComida());
-            rebelde2.getInventario().setComida(rebelde2.getInventario().getComida() - negociacao.getInventarioRebelde2().getComida());
+            negociadorA.getInventario().setComida(negociadorA.getInventario().getComida() + negociacao.getInventarioRebelde2().getComida());
+            negociadorB.getInventario().setComida(negociadorB.getInventario().getComida() - negociacao.getInventarioRebelde2().getComida());
         }
         if (negociacao.getInventarioRebelde2().getArma() > 0) {
-            rebelde1.getInventario().setArma(rebelde1.getInventario().getArma() + negociacao.getInventarioRebelde2().getArma());
-            rebelde2.getInventario().setArma(rebelde2.getInventario().getArma() - negociacao.getInventarioRebelde2().getArma());
+            negociadorA.getInventario().setArma(negociadorA.getInventario().getArma() + negociacao.getInventarioRebelde2().getArma());
+            negociadorB.getInventario().setArma(negociadorB.getInventario().getArma() - negociacao.getInventarioRebelde2().getArma());
         }
         if (negociacao.getInventarioRebelde2().getMunicao() > 0) {
-            rebelde1.getInventario().setMunicao(rebelde1.getInventario().getMunicao() + negociacao.getInventarioRebelde2().getMunicao());
-            rebelde2.getInventario().setMunicao(rebelde2.getInventario().getMunicao() - negociacao.getInventarioRebelde2().getMunicao());
+            negociadorA.getInventario().setMunicao(negociadorA.getInventario().getMunicao() + negociacao.getInventarioRebelde2().getMunicao());
+            negociadorB.getInventario().setMunicao(negociadorB.getInventario().getMunicao() - negociacao.getInventarioRebelde2().getMunicao());
         }
-        rebeldesRepository.atualizarNoArquivo(rebelde1);
-        rebeldesRepository.atualizarNoArquivo(rebelde2);
-        return "Negociação efetuada com sucesso. \n\n" + rebelde1 + "\n\n" + rebelde2;
+        rebeldesRepository.atualizarNoArquivo(negociadorA);
+        rebeldesRepository.atualizarNoArquivo(negociadorB);
+        return "Negociação efetuada com sucesso. \n\n" + negociadorA + "\n\n" + negociadorB;
     }
-
 }

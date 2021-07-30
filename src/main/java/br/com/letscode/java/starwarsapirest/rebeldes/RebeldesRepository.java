@@ -57,12 +57,12 @@ public class RebeldesRepository {
         for (Rebelde rebeldeBuilder: rebeldes) {
             builder.append(formatar(rebeldeBuilder));
         }
-        write(builder.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        write(builder.toString());
     }
 
     // Escreve o arquivo ou adiciona um conteudo junto ao mesmo
-    private void write(String rebeldeString, StandardOpenOption option) throws IOException {
-        try (BufferedWriter bf = Files.newBufferedWriter(rebeldePath, option)) {
+    private void write(String rebeldeString) throws IOException {
+        try (BufferedWriter bf = Files.newBufferedWriter(rebeldePath, StandardOpenOption.TRUNCATE_EXISTING)) {
             bf.write(rebeldeString);
         }
     }
@@ -116,10 +116,7 @@ public class RebeldesRepository {
         inventario.setComida(Integer.valueOf(token.nextToken()));
         rebelde.setInventario(inventario);
         return rebelde;
-
-
     }
-
 }
 
 
