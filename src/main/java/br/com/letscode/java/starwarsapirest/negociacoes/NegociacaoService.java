@@ -16,16 +16,16 @@ public class NegociacaoService {
 
     @SneakyThrows
     public String negociar(Negociacao negociacao) {
-        String mensagemDeRetorno = "";
         Rebelde negociadorA = rebeldesService.findByIdRebelde(negociacao.getIdRebelde1());
         Rebelde negociadorB = rebeldesService.findByIdRebelde(negociacao.getIdRebelde2());
         if (negociadorA == null || negociadorB == null
                 || negociadorA.getDowngrade() >= 3 || negociadorB.getDowngrade() >= 3 ) {
-            mensagemDeRetorno = "ID não encontrado na base rebelde. Verifique se preencheu corretamente o ID ou verifique a lista de traidores";
+            return  "Rebelde não encontrado. Verifique se preencheu corretamente o ID, " +
+                    "ou o rebelde se tornou traidor.";
         } else if (verificarEstoqueNegociacao(negociacao, negociadorA, negociadorB) || verificarPontosNegociacao(negociacao)) {
-            mensagemDeRetorno = realizarTroca(negociacao, negociadorA, negociadorB);
+            return realizarTroca(negociacao, negociadorA, negociadorB);
         }
-        return mensagemDeRetorno;
+        return "Não foi possivel fazer a troca.";
     }
 
     public Boolean verificarEstoqueNegociacao(Negociacao negociacao, Rebelde negociadorA, Rebelde negociadorB) {

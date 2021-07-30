@@ -26,12 +26,12 @@ public class RebeldesServiceTest {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/rebeldes"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("desi")));
+                .andExpect(content().string(containsString("nepster")));
     }
 
     @Test
     public void reportarTraidor() throws Exception {
-        mockMvc.perform(post("/rebeldes/traidor").content(String.valueOf(1))
+        mockMvc.perform(post("/traidores").content(String.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

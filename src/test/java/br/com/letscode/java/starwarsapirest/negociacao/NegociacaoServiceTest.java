@@ -1,0 +1,87 @@
+package br.com.letscode.java.starwarsapirest.negociacao;
+
+import br.com.letscode.java.starwarsapirest.negociacoes.Negociacao;
+import br.com.letscode.java.starwarsapirest.rebeldes.GeneroEnum;
+import br.com.letscode.java.starwarsapirest.rebeldes.Inventario;
+import br.com.letscode.java.starwarsapirest.rebeldes.Localizacao;
+import br.com.letscode.java.starwarsapirest.rebeldes.Rebelde;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class NegociacaoServiceTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    private Rebelde rebeldeArthur() {
+        Rebelde rebelde = new Rebelde();
+        rebelde.setIdRebelde(1);
+        rebelde.setNome("Arthur");
+        rebelde.setIdade(19);
+        rebelde.setGenero(GeneroEnum.MASCULINO);
+        rebelde.setDowngrade(0);
+        Localizacao localizacao = new Localizacao();
+        localizacao.setLatitude(100L);
+        localizacao.setLongitude(200L);
+        localizacao.setNomeGalaxia("ViaLactea");
+        localizacao.setNomeBase("Terra");
+        rebelde.setLocalizacao(localizacao);
+        Inventario inventario = new Inventario();
+        inventario.setArma(0);
+        inventario.setMunicao(0);
+        inventario.setAgua(4);
+        inventario.setComida(0);
+        rebelde.setInventario(inventario);
+        return rebelde;
+    }
+
+    private Rebelde rebeldeJesse() {
+        Rebelde rebelde = new Rebelde();
+        rebelde.setIdRebelde(2);
+        rebelde.setNome("Jesse");
+        rebelde.setIdade(37);
+        rebelde.setGenero(GeneroEnum.MASCULINO);
+        rebelde.setDowngrade(0);
+        Localizacao localizacao = new Localizacao();
+        localizacao.setLatitude(300L);
+        localizacao.setLongitude(250L);
+        localizacao.setNomeGalaxia("ViaLactea");
+        localizacao.setNomeBase("Terra");
+        rebelde.setLocalizacao(localizacao);
+        Inventario inventario = new Inventario();
+        inventario.setArma(2);
+        inventario.setMunicao(0);
+        inventario.setAgua(0);
+        inventario.setComida(0);
+        rebelde.setInventario(inventario);
+        return rebelde;
+    }
+
+    @Test
+    void negociar() throws Exception {
+        var negociacao = new Negociacao();
+        negociacao.setIdRebelde1(rebeldeArthur().getIdRebelde());
+        negociacao.setInventarioRebelde1(rebeldeArthur().getInventario());
+        negociacao.setIdRebelde2(rebeldeJesse().getIdRebelde());
+        negociacao.setInventarioRebelde2(rebeldeJesse().getInventario());
+        mockMvc.perform(post("/negociacao").content(String.valueOf(negociacao))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Negociação efetuada com sucesso")));
+
+    }
+}
