@@ -1,14 +1,13 @@
 package br.com.letscode.java.starwarsapirest.negociacao;
 
 import br.com.letscode.java.starwarsapirest.negociacoes.Negociacao;
-import br.com.letscode.java.starwarsapirest.rebeldes.GeneroEnum;
-import br.com.letscode.java.starwarsapirest.rebeldes.Inventario;
-import br.com.letscode.java.starwarsapirest.rebeldes.Localizacao;
-import br.com.letscode.java.starwarsapirest.rebeldes.Rebelde;
+import br.com.letscode.java.starwarsapirest.rebeldes.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -25,6 +24,7 @@ public class NegociacaoServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
+
 
     private Rebelde rebeldeArthur() {
         Rebelde rebelde = new Rebelde();
@@ -77,11 +77,19 @@ public class NegociacaoServiceTest {
         negociacao.setInventarioRebelde1(rebeldeArthur().getInventario());
         negociacao.setIdRebelde2(rebeldeJesse().getIdRebelde());
         negociacao.setInventarioRebelde2(rebeldeJesse().getInventario());
-        mockMvc.perform(post("/negociacao").content(String.valueOf(negociacao))
+        mockMvc.perform(post("/negociacao")
+                .content(asJsonString(negociacao))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Negociação efetuada com sucesso")));
+                .andExpect(content().string(containsString("efetuada com sucesso")));
+    }
 
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
