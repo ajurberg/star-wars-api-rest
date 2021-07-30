@@ -20,7 +20,7 @@ public class NegociacaoService {
         Rebelde negociadorB = rebeldesService.findByIdRebelde(negociacao.getIdRebelde2());
         if (negociadorA == null || negociadorB == null) {
             return "Rebelde não encontrado. Verifique se preencheu corretamente o ID.";
-        } else if (verificarEstoqueNegociacao(negociacao, negociadorA, negociadorB) || verificarPontosNegociacao(negociacao)) {
+        } else if (verificarEstoqueNegociacao(negociacao, negociadorA, negociadorB) && verificarPontosNegociacao(negociacao)) {
             return realizarTroca(negociacao, negociadorA, negociadorB);
         }
         return "Não foi possivel fazer a troca.";

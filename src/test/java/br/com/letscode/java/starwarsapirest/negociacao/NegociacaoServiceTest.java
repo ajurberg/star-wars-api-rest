@@ -85,6 +85,21 @@ public class NegociacaoServiceTest {
                 .andExpect(content().string(containsString("efetuada com sucesso")));
     }
 
+    @Test
+    void negociarTestNull() throws Exception {
+        var negociacao = new Negociacao();
+        negociacao.setIdRebelde2(rebeldeJesse().getIdRebelde());
+        negociacao.setInventarioRebelde2(rebeldeJesse().getInventario());
+        mockMvc.perform(post("/negociacao")
+                .content(asJsonString(negociacao))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Verifique se preencheu corretamente o ID.")));
+    }
+
+
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
