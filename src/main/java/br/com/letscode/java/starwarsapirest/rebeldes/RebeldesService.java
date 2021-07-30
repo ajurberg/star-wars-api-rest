@@ -14,7 +14,7 @@ public class RebeldesService {
 
     private final RebeldesRepository rebeldesRepository;
 
-    public List listRebeldes() throws IOException {
+    public List<Rebelde> listRebeldes() throws IOException {
         List<Rebelde> todos = rebeldesRepository.getAll();
         List<Rebelde> rebeldes = new ArrayList<>();
         for (Rebelde rebelde : todos) {
@@ -45,17 +45,15 @@ public class RebeldesService {
 
     public String updateLocationRebeldeService(RebeldeDTO rebeldeDTO) throws IOException {
         var rebeldeAtualizado = findByIdRebelde(rebeldeDTO.getIdRebelde());
-        String atualizacao = "";
+
         if (rebeldeAtualizado != null) {
             rebeldeAtualizado.setLocalizacao(rebeldeDTO.getLocalizacao());
-            atualizacao = ">>>>> Rebelde ID: " + rebeldeDTO.getIdRebelde() + " Nome: "
+            rebeldesRepository.atualizarNoArquivo(rebeldeAtualizado);
+            return ">>>>> Rebelde ID: " + rebeldeDTO.getIdRebelde() + " Nome: "
                     + rebeldeAtualizado.getNome() + ", atualizado com sucesso! <<<<< \n" +
                     "\n Nova localização: " + rebeldeAtualizado.getLocalizacao();
-            rebeldesRepository.atualizarNoArquivo(rebeldeAtualizado);
-        } else {
-            atualizacao = ">>>>> Rebelde não encontrado. <<<<< \n";
         }
-        return atualizacao;
+        return "Rebelde não encontrado";
     }
 
     public Rebelde findByIdRebelde(Integer idRebelde) throws IOException {

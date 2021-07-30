@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -41,7 +40,6 @@ public class RelatoriosService {
         Double rebeldeCounter = 0d;
         List<Rebelde> rebeldes = rebeldesRepository.getAll();
         for (Rebelde rebelde : rebeldes) {
-            // Rebeldes
             if (rebelde.getDowngrade() < 3) {
                 armaCounter += rebelde.getInventario().getArma();
                 municaoCounter += rebelde.getInventario().getMunicao();
@@ -50,7 +48,7 @@ public class RelatoriosService {
                 rebeldeCounter++;
             }
         }
-        Double pontosRebeldes = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
+        double pontosRebeldes = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
         return ">>>>> RELATÓRIO DE REBELDES <<<<< \n" +
                 "O número total de traidores é: " + rebeldeCounter + "\n" +
                 "O total de armas dos Rebeldes é: " + armaCounter + "\n" +
@@ -71,11 +69,11 @@ public class RelatoriosService {
     }
 
     public String relatorioRecursosTraidores() throws IOException {
-        Double armaCounter = 0d;
-        Double municaoCounter = 0d;
-        Double aguaCounter = 0d;
-        Double comidaCounter = 0d;
-        Double traidorCounter = 0d;
+        double armaCounter = 0d;
+        double municaoCounter = 0d;
+        double aguaCounter = 0d;
+        double comidaCounter = 0d;
+        double traidorCounter = 0d;
         List<Rebelde> rebeldes = rebeldesRepository.getAll();
         for (Rebelde rebelde : rebeldes) {
             // apenas Traidores
@@ -87,7 +85,7 @@ public class RelatoriosService {
                 traidorCounter++;
             }
         }
-        Double pontosTraidor = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
+        double pontosTraidor = (armaCounter * 4) + (municaoCounter * 3) + (aguaCounter * 2) + comidaCounter;
         return ">>>>> RELATÓRIO DE TRAIDORES <<<<< \n" +
                 "O número total de traidores é: " + traidorCounter + "\n" +
                 "O total de armas dos Traidores é: " + armaCounter + "\n" +

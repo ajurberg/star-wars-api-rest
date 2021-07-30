@@ -27,9 +27,4 @@ public class RebeldesRestController {
     private String atualizarRebelde(@RequestBody RebeldeDTO rebeldeDTO) throws IOException {
         return rebeldesService.updateLocationRebeldeService(rebeldeDTO);
     }
-
-    @PostMapping("/traidor")
-    private String reportarTraidor(@RequestBody Integer traidorId) throws IOException {
-        return rebeldesService.reportarTraidor(traidorId);
-    }
 }
