@@ -12,7 +12,7 @@ import java.io.IOException;
 @RequestMapping("/traidores")
 @RestController
 @AllArgsConstructor
-public class traidorRestController {
+public class TraidorRestController {
 
     private final RebeldesService rebeldesService;
 

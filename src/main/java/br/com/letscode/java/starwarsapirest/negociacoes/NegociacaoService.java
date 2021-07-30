@@ -18,10 +18,8 @@ public class NegociacaoService {
     public String negociar(Negociacao negociacao) {
         Rebelde negociadorA = rebeldesService.findByIdRebelde(negociacao.getIdRebelde1());
         Rebelde negociadorB = rebeldesService.findByIdRebelde(negociacao.getIdRebelde2());
-        if (negociadorA == null || negociadorB == null
-                || negociadorA.getDowngrade() >= 3 || negociadorB.getDowngrade() >= 3 ) {
-            return  "Rebelde não encontrado. Verifique se preencheu corretamente o ID, " +
-                    "ou o rebelde se tornou traidor.";
+        if (negociadorA == null || negociadorB == null) {
+            return "Rebelde não encontrado. Verifique se preencheu corretamente o ID.";
         } else if (verificarEstoqueNegociacao(negociacao, negociadorA, negociadorB) || verificarPontosNegociacao(negociacao)) {
             return realizarTroca(negociacao, negociadorA, negociadorB);
         }
