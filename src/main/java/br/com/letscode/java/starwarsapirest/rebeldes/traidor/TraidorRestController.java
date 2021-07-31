@@ -1,6 +1,5 @@
 package br.com.letscode.java.starwarsapirest.rebeldes.traidor;
 
-import br.com.letscode.java.starwarsapirest.rebeldes.RebeldesService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

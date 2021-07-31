@@ -1,16 +1,17 @@
 package br.com.letscode.java.starwarsapirest.negociacao;
 
 import br.com.letscode.java.starwarsapirest.negociacoes.Negociacao;
+import br.com.letscode.java.starwarsapirest.negociacoes.NegociacaoService;
 import br.com.letscode.java.starwarsapirest.rebeldes.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,6 +26,8 @@ public class NegociacaoServiceTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private NegociacaoService negociacaoService;
 
     private Rebelde rebeldeArthur() {
         Rebelde rebelde = new Rebelde();
@@ -72,6 +75,8 @@ public class NegociacaoServiceTest {
 
     @Test
     void negociar() throws Exception {
+        Mockito.when(this.negociacaoService.negociar(Mockito.any()))
+                .thenReturn("efetuada com sucesso");
         var negociacao = new Negociacao();
         negociacao.setIdRebelde1(rebeldeArthur().getIdRebelde());
         negociacao.setInventarioRebelde1(rebeldeArthur().getInventario());
@@ -87,6 +92,8 @@ public class NegociacaoServiceTest {
 
     @Test
     void negociarTestNull() throws Exception {
+        Mockito.when(this.negociacaoService.negociar(Mockito.any()))
+                .thenReturn("Verifique se preencheu corretamente o ID.");
         var negociacao = new Negociacao();
         negociacao.setIdRebelde2(rebeldeJesse().getIdRebelde());
         negociacao.setInventarioRebelde2(rebeldeJesse().getInventario());
@@ -97,8 +104,6 @@ public class NegociacaoServiceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Verifique se preencheu corretamente o ID.")));
     }
-
-
 
     public static String asJsonString(final Object obj) {
         try {

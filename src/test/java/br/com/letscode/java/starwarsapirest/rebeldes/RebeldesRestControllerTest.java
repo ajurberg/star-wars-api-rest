@@ -2,6 +2,7 @@ package br.com.letscode.java.starwarsapirest.rebeldes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,7 @@ public class RebeldesRestControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private RebeldesRepository rebeldesRepository;
+    private RebeldesService rebeldesService;
 
     private Rebelde rebelde() {
         Rebelde rebelde = new Rebelde();
@@ -49,6 +50,8 @@ public class RebeldesRestControllerTest {
 
     @Test
     public void createRebelde() throws Exception {
+        Mockito.when(this.rebeldesService.addRebeldeService(Mockito.any()))
+                .thenReturn("Arthur");
         Rebelde rebelde = rebelde();
         mockMvc.perform(post("/rebeldes")
                 .content(asJsonString(rebelde))
@@ -59,7 +62,9 @@ public class RebeldesRestControllerTest {
     }
 
     @Test
-    public void naoAtualizarRebelde() throws Exception {
+    public void AtualizarRebelde() throws Exception {
+        Mockito.when(this.rebeldesService.updateLocationRebeldeService(Mockito.any()))
+                .thenReturn("atualizado com sucesso!");
         var rebelde = rebelde();
         var rebeldeDto = new RebeldeDTO();
         rebeldeDto.setIdRebelde(1);
@@ -69,7 +74,7 @@ public class RebeldesRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(">>>>> Rebelde nÃ£o encontrado. <<<<<")));
+                .andExpect(content().string(containsString("atualizado com sucesso!")));
     }
 
     public static String asJsonString(final Object obj) {
