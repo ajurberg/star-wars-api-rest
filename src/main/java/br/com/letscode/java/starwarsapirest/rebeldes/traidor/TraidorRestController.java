@@ -14,10 +14,10 @@ import java.io.IOException;
 @AllArgsConstructor
 public class TraidorRestController {
 
-    private final RebeldesService rebeldesService;
+    private final TraidorService traidorService;
 
     @PostMapping()
     private String reportarTraidor(@RequestBody Integer traidorId) throws IOException {
-        return rebeldesService.reportarTraidor(traidorId);
+        return traidorService.reportarTraidor(traidorId);
     }
 }
